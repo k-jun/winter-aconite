@@ -18,18 +18,30 @@ export class Word {
   }
 
   _bounce() {
-    const margin = 100;
+    const margin = 0;
+    // if (this.x < margin) {
+    //   this.dx += 1;
+    // }
+    // if (this.y < margin) {
+    //   this.dy += 1;
+    // }
+    // if (this.x > globalThis.innerWidth - margin) {
+    //   this.dx += -1;
+    // }
+    // if (this.y > globalThis.innerHeight - margin) {
+    //   this.dy += -1;
+    // }
     if (this.x < margin) {
-      this.dx += 1;
+      this.x = globalThis.innerWidth;
     }
     if (this.y < margin) {
-      this.dy += 1;
+      this.y = globalThis.innerHeight;
     }
     if (this.x > globalThis.innerWidth - margin) {
-      this.dx += -1;
+      this.x = margin;
     }
     if (this.y > globalThis.innerHeight - margin) {
-      this.dy += -1;
+      this.y = margin;
     }
   }
 
@@ -96,19 +108,18 @@ export class Word {
   }
 
   _speedLimit() {
-    const limit = 10;
     const speed = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
-    if (speed > limit) {
-      this.dx = (this.dx / speed) * limit;
-      this.dy = (this.dy / speed) * limit;
+    if (speed > this.sl) {
+      this.dx = (this.dx / speed) * this.sl;
+      this.dy = (this.dy / speed) * this.sl;
     }
   }
 
   move(words) {
-    this._centering(words);
-    this._avoidance(words);
-    this._matching(words);
-    this._speedLimit();
+    // this._centering(words);
+    // this._avoidance(words);
+    // this._matching(words);
+    // this._speedLimit();
     this._bounce();
     this.x += this.dx;
     this.y += this.dy;

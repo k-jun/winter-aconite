@@ -5,7 +5,7 @@ import { Word } from "./word.js";
 function init() {
   state = { words: [] };
   for (let i = 0; i < 100; i++) {
-    state.words.push(new Word({ text: "鳥", font: "20px serif" }));
+    state.words.push(new Word({ text: "くノ一", font: "20px serif" }));
   }
   globalThis.requestAnimationFrame(draw);
 }
@@ -26,4 +26,15 @@ function draw() {
   globalThis.requestAnimationFrame(draw);
 }
 
+for (const v of ["fm", "fa", "fa", "pr", "sl"]) {
+  document.getElementById(v).addEventListener("change", (e) => {
+    for (const w of state.words) {
+      w[v] = e.target.value;
+    }
+  });
+}
+// const fa = document.getElementById("fa");
+// const fc = document.getElementById("fc");
+// const pr = document.getElementById("pr");
+// const sl = document.getElementById("sl");
 init();
