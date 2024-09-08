@@ -1,52 +1,40 @@
 export class Word {
-  constructor({ text, font }) {
-    this.ls = 5;
-    this.pr = 30;
-    this.ps = 20;
-    this.fm = 0.05;
-    this.fa = 0.05;
-    this.fc = 0.005;
+  constructor({ text, font, next, sl, pr, ps, fm, fa, fc }) {
+    this.sl = sl;
+    this.pr = pr;
+    this.ps = ps;
+    this.fm = fm;
+    this.fa = fa;
+    this.fc = fc;
 
     this.font = font;
-    this.words = [text];
-    this.head = 0;
+    this.text = text;
+    this.next = next;
     this.x = Math.random() * globalThis.innerWidth;
     this.y = Math.random() * globalThis.innerHeight;
-    this.dx = (Math.random() * this.ls) - (this.ls / 2);
-    this.dy = (Math.random() * this.ls) - (this.ls / 2);
-
-    this.isCalling = false;
+    this.dx = (Math.random() * this.sl) - (this.sl / 2);
+    this.dy = (Math.random() * this.sl) - (this.sl / 2);
+    this.isTimeout = false;
   }
   distance(a, b) {
     return Math.hypot(Math.abs(a.x - b.x), Math.abs(a.y - b.y));
   }
 
-  get text() {
-    return this.words[this.head];
-  }
-
-  async _switch() {
-    if (this.isCalling) {
+  _switch() {
+    if (this.isTimeout) {
       return;
     }
-    this.isCalling = true;
-    this.head += 1;
-    if (this.head < this.words.length) {
-      return;
-    }
+    this.isTimeout = true;
+    this.text = this.next();
 
-    const resp = await axios.get("/api/words");
-    console.log("api called");
-    this.words = resp.data;
-    this.head = 0;
-    setTimeout(() => this.isCalling = false, 3000);
+    setTimeout(() => this.isTimeout = false, 3000);
   }
 
   _bounce() {
     const margin = -100;
     if (this.x < margin) {
-      this._switch();
       this.dx *= -1;
+      this._switch();
     }
     if (this.y < margin) {
       this.dy *= -1;
@@ -136,14 +124,16 @@ export class Word {
     this._avoidance(words);
     this._matching(words);
     this._speedLimit();
+    this._bounce();
     this.x += this.dx;
     this.y += this.dy;
-    this._bounce();
   }
 
   draw(ctx) {
     ctx.save();
     ctx.font = this.font;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
     ctx.fillText(this.text, this.x, this.y);
     ctx.restore();
   }
