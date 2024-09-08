@@ -2,10 +2,13 @@ let state;
 
 import { Word } from "./word.js";
 
-function init() {
+async function init() {
+  const response = await axios.get("/api/words");
+  console.log(response.data);
+
   state = { words: [] };
-  for (let i = 0; i < 100; i++) {
-    state.words.push(new Word({ text: "くノ一", font: "20px serif" }));
+  for (let i = 0; i < 30; i++) {
+    state.words.push(new Word({ text: response.data[i], font: "20px serif" }));
   }
   globalThis.requestAnimationFrame(draw);
 }

@@ -1,47 +1,64 @@
 export class Word {
   constructor({ text, font }) {
-    this.ls = 10;
-    this.pr = 75;
+    this.ls = 5;
+    this.pr = 30;
+    this.ps = 20;
     this.fm = 0.05;
     this.fa = 0.05;
     this.fc = 0.005;
 
-    this.text = text;
     this.font = font;
+    this.words = [text];
+    this.head = 0;
     this.x = Math.random() * globalThis.innerWidth;
     this.y = Math.random() * globalThis.innerHeight;
     this.dx = (Math.random() * this.ls) - (this.ls / 2);
     this.dy = (Math.random() * this.ls) - (this.ls / 2);
+
+    this.isCalling = false;
   }
   distance(a, b) {
     return Math.hypot(Math.abs(a.x - b.x), Math.abs(a.y - b.y));
   }
 
+  get text() {
+    return this.words[this.head];
+  }
+
+  async _switch() {
+    if (this.isCalling) {
+      return;
+    }
+    this.isCalling = true;
+    this.head += 1;
+    if (this.head < this.words.length) {
+      return;
+    }
+
+    const resp = await axios.get("/api/words");
+    console.log("api called");
+    this.words = resp.data;
+    this.head = 0;
+    setTimeout(() => this.isCalling = false, 3000);
+  }
+
   _bounce() {
-    const margin = 0;
-    // if (this.x < margin) {
-    //   this.dx += 1;
-    // }
-    // if (this.y < margin) {
-    //   this.dy += 1;
-    // }
-    // if (this.x > globalThis.innerWidth - margin) {
-    //   this.dx += -1;
-    // }
-    // if (this.y > globalThis.innerHeight - margin) {
-    //   this.dy += -1;
-    // }
+    const margin = -100;
     if (this.x < margin) {
-      this.x = globalThis.innerWidth;
+      this._switch();
+      this.dx *= -1;
     }
     if (this.y < margin) {
-      this.y = globalThis.innerHeight;
+      this.dy *= -1;
+      this._switch();
     }
     if (this.x > globalThis.innerWidth - margin) {
-      this.x = margin;
+      this.dx *= -1;
+      this._switch();
     }
     if (this.y > globalThis.innerHeight - margin) {
-      this.y = margin;
+      this.dy *= -1;
+      this._switch();
     }
   }
 
@@ -68,14 +85,13 @@ export class Word {
   }
 
   _avoidance(words) {
-    const ps = 20;
     let x = 0;
     let y = 0;
     for (const w of words) {
       if (w === this) {
         continue;
       }
-      if (this.distance(this, w) < ps) {
+      if (this.distance(this, w) < this.ps) {
         x += this.x - w.x;
         y += this.y - w.y;
       }
@@ -116,13 +132,13 @@ export class Word {
   }
 
   move(words) {
-    // this._centering(words);
-    // this._avoidance(words);
-    // this._matching(words);
-    // this._speedLimit();
-    this._bounce();
+    this._centering(words);
+    this._avoidance(words);
+    this._matching(words);
+    this._speedLimit();
     this.x += this.dx;
     this.y += this.dy;
+    this._bounce();
   }
 
   draw(ctx) {

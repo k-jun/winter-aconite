@@ -1,5 +1,7 @@
 # Winter Aconite
 
+name: Word Jumble
+
 ## run
 
 ```sh
