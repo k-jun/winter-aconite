@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Winter Aconite</title>
+    <title>Word Jumble</title>
     <style>
         body {
             margin: 0px;
@@ -12,11 +12,34 @@
             height: 100vh;
             display: block;
         }
+
+        #splash {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100vw;
+            height: 100vh;
+            background-color: white;
+        }
+
+        @keyframes opacity1to0 {
+            from { 
+                opacity: 1;
+            }
+            to { 
+                opacity: 0;
+            }
+        }
+        .opacity1to0 {  
+          animation: 2s opacity1to0 2s ease-in-out forwards;
+        }
     </style>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="module" src="index.js"></script>
 </head>
 <body>
     <canvas id="canvas"></canvas>
+    <div id="splash" class="opacity1to0">
+    </div>
 </body>
 </html>

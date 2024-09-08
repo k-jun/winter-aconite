@@ -23,7 +23,7 @@ function main() {
   const router = new Router();
   router.get("/api/words", (ctx) => {
     const rw = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 1000; i++) {
       rw.push(words[Math.floor(Math.random() * words.length)]);
     }
 

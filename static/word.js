@@ -1,5 +1,5 @@
 export class Word {
-  constructor({ text, font, next, sl, pr, ps, fm, fa, fc }) {
+  constructor({ text, font, next, sl, pr, ps, fm, fa, fc, margin }) {
     this.sl = sl;
     this.pr = pr;
     this.ps = ps;
@@ -10,12 +10,14 @@ export class Word {
     this.font = font;
     this.text = text;
     this.next = next;
+    this.margin = margin;
     this.x = Math.random() * globalThis.innerWidth;
     this.y = Math.random() * globalThis.innerHeight;
     this.dx = (Math.random() * this.sl) - (this.sl / 2);
     this.dy = (Math.random() * this.sl) - (this.sl / 2);
     this.isTimeout = false;
   }
+
   distance(a, b) {
     return Math.hypot(Math.abs(a.x - b.x), Math.abs(a.y - b.y));
   }
@@ -31,20 +33,19 @@ export class Word {
   }
 
   _bounce() {
-    const margin = -100;
-    if (this.x < margin) {
+    if (this.x < this.margin) {
       this.dx *= -1;
       this._switch();
     }
-    if (this.y < margin) {
+    if (this.y < this.margin) {
       this.dy *= -1;
       this._switch();
     }
-    if (this.x > globalThis.innerWidth - margin) {
+    if (this.x > globalThis.innerWidth - this.margin) {
       this.dx *= -1;
       this._switch();
     }
-    if (this.y > globalThis.innerHeight - margin) {
+    if (this.y > globalThis.innerHeight - this.margin) {
       this.dy *= -1;
       this._switch();
     }
