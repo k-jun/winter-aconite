@@ -129,11 +129,14 @@ export class Word {
     this.y += this.dy;
   }
 
-  draw(ctx) {
+  draw(ctx, darkModeFlag) {
     ctx.save();
     ctx.font = this.font;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
+    if (darkModeFlag) {
+      ctx.fillStyle = "white";
+    }
     ctx.fillText(this.text, this.x, this.y);
     ctx.restore();
   }

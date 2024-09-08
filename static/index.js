@@ -19,12 +19,19 @@ async function init() {
     layer2: [],
     layer3: [],
     words: resp.data,
+    darkMode: false,
   };
 
   setInterval(async () => {
     const resp = await axios.get("/api/words");
     state.words = resp.data;
   }, 10 * 1000);
+
+  const canvas = document.getElementById("canvas");
+
+  canvas.addEventListener("click", () => {
+    state.darkMode = !state.darkMode;
+  });
 
   const next = () => {
     return state.words[Math.floor(Math.random() * resp.data.length)];
@@ -85,17 +92,22 @@ function draw() {
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, globalThis.innerWidth, globalThis.innerHeight);
 
+  if (state.darkMode) {
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, globalThis.innerWidth, globalThis.innerHeight);
+  }
+
   for (const w of state.layer1) {
     w.move(state.layer1);
-    w.draw(ctx);
+    w.draw(ctx, state.darkMode);
   }
   for (const w of state.layer2) {
     w.move(state.layer2);
-    w.draw(ctx);
+    w.draw(ctx, state.darkMode);
   }
   for (const w of state.layer3) {
     w.move(state.layer3);
-    w.draw(ctx);
+    w.draw(ctx, state.darkMode);
   }
 
   globalThis.requestAnimationFrame(draw);
