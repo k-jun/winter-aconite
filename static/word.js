@@ -11,8 +11,15 @@ export class Word {
     this.text = text;
     this.next = next;
     this.margin = margin;
-    this.x = Math.random() * globalThis.innerWidth;
-    this.y = Math.random() * globalThis.innerHeight;
+
+    const xr = Math.floor(Math.random() * margin);
+    const yr = Math.floor(Math.random() * margin);
+    this.x = Math.floor(Math.random() * 2) === 0
+      ? xr
+      : globalThis.innerWidth - xr;
+    this.y = Math.floor(Math.random() * 2) === 0
+      ? yr
+      : globalThis.innerHeight - yr;
     this.dx = (Math.random() * this.sl) - (this.sl / 2);
     this.dy = (Math.random() * this.sl) - (this.sl / 2);
     this.isTimeout = false;
