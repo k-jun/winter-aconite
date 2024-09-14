@@ -2,15 +2,6 @@ let state;
 
 import { Word } from "./word.js";
 
-const ff = [
-  "serif",
-  // "sans-serif",
-  // "monospace",
-  // "cursive",
-  // "fantasy",
-  // "system-ui",
-];
-
 async function init() {
   const resp = await axios.get("/api/words");
 
@@ -40,54 +31,43 @@ async function init() {
   const next = () => {
     return state.words[Math.floor(Math.random() * resp.data.length)];
   };
-  for (let i = 0; i < 30; i++) {
-    state.layer1.push(
-      new Word({
-        text: resp.data[i],
-        font: `32px ${ff[Math.floor(Math.random() * ff.length)]}`,
-        next,
-        sl: 3,
-        pr: 55,
-        ps: 50,
-        fm: 0.05,
-        fa: 0.05,
-        fc: 0.005,
-        margin: -200,
-      }),
-    );
-  }
-  for (let i = 30; i < 60; i++) {
-    state.layer2.push(
-      new Word({
-        text: resp.data[i],
-        font: `24px ${ff[Math.floor(Math.random() * ff.length)]}`,
-        next,
-        sl: 2,
-        pr: 55,
-        ps: 50,
-        fm: 0.05,
-        fa: 0.05,
-        fc: 0.005,
-        margin: -100,
-      }),
-    );
-  }
-  for (let i = 60; i < 90; i++) {
-    state.layer3.push(
-      new Word({
-        text: resp.data[i],
-        font: `16px ${ff[Math.floor(Math.random() * ff.length)]}`,
-        next,
-        sl: 1,
-        pr: 30,
-        ps: 50,
-        fm: 0.05,
-        fa: 0.05,
-        fc: 0.005,
-        margin: 0,
-      }),
-    );
-  }
+  const shuffle = (
+    {
+      cnt,
+      words = [],
+      sl = 3,
+      margin = -200,
+      size = 32,
+    },
+  ) => {
+    const a = [];
+    for (let i = 0; i < cnt; i++) {
+      a.push(
+        new Word({
+          text: words[Math.floor(Math.random() * words.length)],
+          font: `${size}px serif`,
+          next,
+          sl,
+          pr: 55,
+          ps: 50,
+          fm: 0.05,
+          fa: 0.05,
+          fc: 0.005,
+          margin,
+        }),
+      );
+    }
+    return a;
+  };
+  const h = globalThis.innerHeight;
+  const w = globalThis.innerWidth;
+  const cnt = Math.floor((h * w) / 37000);
+  console.log(`cnt ${cnt}`);
+
+  const words = resp.data;
+  state.layer1.push(...shuffle({ cnt, words, sl: 3, size: 32, margin: -200 }));
+  state.layer2.push(...shuffle({ cnt, words, sl: 2, size: 24, margin: -100 }));
+  state.layer3.push(...shuffle({ cnt, words, sl: 1, size: 16, margin: 0 }));
   globalThis.requestAnimationFrame(draw);
 }
 
