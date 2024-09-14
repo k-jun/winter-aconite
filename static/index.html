@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <title>Word Jumble</title>
+    <link rel="icon" href="word-jumble.svg">
     <style>
         body {
             margin: 0px;
@@ -20,6 +21,19 @@
             width: 100vw;
             height: 100vh;
             background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-family: "Gill Sans", sans-serif;
+        }
+        h1 {
+            margin: 10px 0 0;
+            font-size: 28px
+        }
+        p {
+            margin: 0;
+            font-size: 16px
         }
 
         @keyframes opacity1to0 {
@@ -40,6 +54,9 @@
 <body>
     <canvas id="canvas"></canvas>
     <div id="splash" class="opacity1to0">
+        <img src="word-jumble.svg" width="120" height="120">
+        <h1>Word Jumble</h1>
+        <p>designed by: k-jun</p>
     </div>
 </body>
 </html>
