@@ -32,6 +32,18 @@ export class Word {
     setTimeout(() => this.isTimeout = false, 3000);
   }
 
+  isEdge() {
+    if (
+      this.x < this.margin ||
+      this.y < this.margin ||
+      this.x > globalThis.innerWidth - this.margin ||
+      this.y > globalThis.innerHeight - this.margin
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   _bounce() {
     if (this.x < this.margin) {
       this.dx *= -1;
