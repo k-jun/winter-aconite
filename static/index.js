@@ -89,7 +89,7 @@ async function init() {
   setInterval(async () => {
     const resp = await axios.get("/api/words");
     state.words = resp.data;
-  }, 10 * 1000);
+  }, 60 * 1000);
 
   const canvas = document.getElementById("canvas");
   const splash = document.getElementById("splash");
