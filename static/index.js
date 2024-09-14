@@ -12,7 +12,7 @@ const add = ({ cnt1, cnt2, cnt3 }) => {
       words: state.words,
       sl: 3,
       size: 32,
-      margin: -200,
+      margin: -300,
       next,
     }),
   );
@@ -22,7 +22,7 @@ const add = ({ cnt1, cnt2, cnt3 }) => {
       words: state.words,
       sl: 2,
       size: 24,
-      margin: -100,
+      margin: -200,
       next,
     }),
   );
@@ -32,7 +32,7 @@ const add = ({ cnt1, cnt2, cnt3 }) => {
       words: state.words,
       sl: 1,
       size: 16,
-      margin: 0,
+      margin: -100,
       next,
     }),
   );
@@ -101,12 +101,7 @@ async function init() {
     state.darkMode = !state.darkMode;
   });
 
-  const h = globalThis.innerHeight;
-  const w = globalThis.innerWidth;
-  const cnt = Math.floor((h * w) / 35000);
-
   state.words = resp.data;
-  add({ cnt1: cnt, cnt2: cnt, cnt3: cnt });
   globalThis.requestAnimationFrame(draw);
 }
 
@@ -115,7 +110,7 @@ function draw() {
   canvas.height = globalThis.innerHeight;
   canvas.width = globalThis.innerWidth;
   const cnt = Math.floor(
-    (globalThis.innerHeight * globalThis.innerWidth) / 35000,
+    (globalThis.innerHeight * globalThis.innerWidth) / 30000,
   );
 
   const ctx = canvas.getContext("2d");
@@ -159,7 +154,11 @@ function draw() {
       idxs3.push(i);
     }
   }
-  del({ idxs1, idxs2, idxs3 });
+
+  if (idxs1.length > 0 || idxs2.length > 0 || idxs3.length > 0) {
+    del({ idxs1, idxs2, idxs3 });
+  }
+
   globalThis.requestAnimationFrame(draw);
 }
 
