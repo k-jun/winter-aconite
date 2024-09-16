@@ -1,6 +1,4 @@
-# Winter Aconite
-
-name: Word Jumble
+# Word Jumble
 
 ## run
 
@@ -14,3 +12,4 @@ $ PORT=8080 deno run --allow-net --allow-read --allow-env src/main.js
 $ deno test
 ```
 
+<!-- winter-aconite -->
