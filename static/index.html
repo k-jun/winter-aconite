@@ -3,6 +3,7 @@
 <head>
     <title>Word Jumble</title>
     <link rel="icon" href="word-jumble.svg">
+    <link href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic" rel="stylesheet">
     <meta data-n-head="1" name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
@@ -27,14 +28,85 @@
             justify-content: center;
             flex-direction: column;
             font-family: "Gill Sans", sans-serif;
+            z-index: 1;
+        }
+
+        #copyright {
+            position: absolute;
+            right: 10px;
+            bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+            font-size: 10px;
+            font-family: sans-serif;
+        }
+
+        #config {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        #form { 
+            position: absolute;
+            background-color: white;
+            color: #333;
+            right: 18px;
+            bottom: 20px;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-family: sans-serif;
+            font-size: 16px;
+            height: 76px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            opacity: 0;
+        }
+
+        #config-reset {
+            font-size: 10px;
+            justify-content: start;
+            cursor: pointer;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
         }
         h1 {
             margin: 10px 0 0;
-            font-size: 28px
+            font-size: 28px;
         }
         p {
             margin: 0;
             font-size: 16px
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            outline: none;
+            margin: 0 3px;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            background: #ddd;
+            border-radius: 8px;
+            height: 5px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 14px;
+            width: 14px;
+            background-color: #333;
+            border-radius: 50%;
+            margin-top: -6px;
         }
 
         @keyframes opacity1to0 {
@@ -45,8 +117,26 @@
                 opacity: 0;
             }
         }
-        .opacity1to0 {  
+
+        @keyframes opacity0to1 {
+            from { 
+                opacity: 0;
+            }
+            to { 
+                opacity: 1;
+            }
+        }
+
+        .opacity1to0_22 {  
           animation: 2s opacity1to0 2s ease-in-out forwards;
+        }
+
+        .opacity0to1_10 {  
+          animation: 1s opacity0to1 0s ease-in-out forwards;
+        }
+
+        .opacity1to0_10 {  
+          animation: 1s opacity1to0 0s ease-in-out forwards;
         }
     </style>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -54,10 +144,24 @@
 </head>
 <body>
     <canvas id="canvas"></canvas>
-    <div id="splash" class="opacity1to0">
+    <div id="splash" class="opacity1to0_22">
         <img src="word-jumble.svg" width="120" height="120">
         <h1>Word Jumble</h1>
         <p>designed by: k-jun</p>
     </div>
-</body>
-</html>
+    <div id="copyright">
+       <span id="config">[設定]</span>
+    </div>
+    <form id="form">
+        <div class="row">
+            <label>速度：</label>
+            <input id="velocity" value="10" type="range" min="1" step="0.1"/>
+            <label id="label-v">10.0</label>%
+        </div>
+        <div id="density" class="row">
+            <label>密度：</label>
+            <input type="range" min="1" step="0.1"/>
+            <label id="label-d">60.0</label>%
+        </div>
+        <div class="row" id="config-reset">[初期値に戻す]</div>
+    </form>
